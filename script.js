@@ -1,4 +1,4 @@
-
+ل
 /****************************************************
  * SCALEFLOW UNIVERSITY
  * GOOGLE SHEETS AUTHENTICATION
@@ -23,6 +23,15 @@ const regForm = document.getElementById("regForm");
 const loginForm = document.getElementById("loginForm");
 const googleConnectBtn = document.getElementById("googleConnectBtn");
 
+// Registration inputs
+const regFullName = document.getElementById("regFullName");
+const regEmail = document.getElementById("regEmail");
+const regPassword = document.getElementById("regPassword");
+
+// Login inputs
+const loginEmail = document.getElementById("loginEmail");
+const loginPassword = document.getElementById("loginPassword");
+
 // 3. SESSION TOKEN KEY
 const TOKEN_KEY = "scaleflow_session_token";
 
@@ -41,10 +50,23 @@ async function apiRequest(action, data = {}) {
     })
   });
 
-  const result = await response.json();
+  let result;
+
+  try {
+    result = await response.json();
+  } catch (error) {
+    throw new Error(
+      "Server returned an invalid response. Please check Apps Script deployment."
+    );
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      result.message || "Server error: " + response.status
+    );
+  }
 
   if (
-    !response.ok ||
     result.status === "error" ||
     result.success === false
   ) {
@@ -61,17 +83,33 @@ async function apiRequest(action, data = {}) {
 // ==========================================
 if (goToLogin) {
   goToLogin.addEventListener("click", () => {
-    if (signUpFormBox) signUpFormBox.style.display = "none";
-    if (loginFormBox) loginFormBox.style.display = "block";
-    if (authContainer) authContainer.classList.add("active-login");
+    if (signUpFormBox) {
+      signUpFormBox.style.display = "none";
+    }
+
+    if (loginFormBox) {
+      loginFormBox.style.display = "block";
+    }
+
+    if (authContainer) {
+      authContainer.classList.add("active-login");
+    }
   });
 }
 
 if (goToSignUp) {
   goToSignUp.addEventListener("click", () => {
-    if (loginFormBox) loginFormBox.style.display = "none";
-    if (signUpFormBox) signUpFormBox.style.display = "block";
-    if (authContainer) authContainer.classList.remove("active-login");
+    if (loginFormBox) {
+      loginFormBox.style.display = "none";
+    }
+
+    if (signUpFormBox) {
+      signUpFormBox.style.display = "block";
+    }
+
+    if (authContainer) {
+      authContainer.classList.remove("active-login");
+    }
   });
 }
 
@@ -82,37 +120,56 @@ if (regForm) {
   regForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const email = document.getElementById("regEmail").value.trim();
-    const password = document.getElementById("regPassword").value;
+    // Read registration fields
+    const fullName = regFullName?.value.trim() || "";
+    const email = regEmail?.value.trim() || "";
+    const password = regPassword?.value || "";
 
     const submitBtn = regForm.querySelector('[type="submit"]');
 
-    if (!email || !password) {
-      alert("Please enter your email and password.");
+    // Validate required fields
+    if (!fullName || !email || !password) {
+      alert("Please enter your full name, email and password.");
+      return;
+    }
+
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long.");
       return;
     }
 
     try {
-      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Registering...";
+      }
 
+      // Send registration data to Apps Script
       const result = await apiRequest("register", {
-        fullName: email.split("@")[0],
+        fullName: fullName,
         email: email,
         password: password
       });
 
+      console.log("REGISTRATION API RESPONSE:", result);
+
       if (!result.token) {
         throw new Error(
-          "Registration succeeded, but no session token was returned."
+          result.message ||
+          "Registration response did not include a session token."
         );
       }
 
+      // Save session token
       localStorage.setItem(TOKEN_KEY, result.token);
 
+      // Get registered student email
       const studentEmail = result.student?.Email || email;
 
+      // Open dashboard
       openDashboard(studentEmail);
 
+      // Reset registration form
       regForm.reset();
 
       alert(result.message || "Registration successful!");
@@ -120,8 +177,12 @@ if (regForm) {
     } catch (error) {
       alert("Registration failed: " + error.message);
       console.error("Registration error:", error);
+
     } finally {
-      if (submitBtn) submitBtn.disabled = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Register";
+      }
     }
   });
 }
@@ -133,8 +194,8 @@ if (loginForm) {
   loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
+    const email = loginEmail?.value.trim() || "";
+    const password = loginPassword?.value || "";
 
     const submitBtn = loginForm.querySelector('[type="submit"]');
 
@@ -144,8 +205,12 @@ if (loginForm) {
     }
 
     try {
-      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Logging in...";
+      }
 
+      // Send login data
       const result = await apiRequest("login", {
         email: email,
         password: password
@@ -155,14 +220,17 @@ if (loginForm) {
 
       if (!result.token) {
         throw new Error(
-          "Login succeeded, but the server did not return a session token."
+          result.message ||
+          "Login response did not include a session token."
         );
       }
 
+      // Save session token
       localStorage.setItem(TOKEN_KEY, result.token);
 
       const studentEmail = result.student?.Email || email;
 
+      // Open dashboard
       openDashboard(studentEmail);
 
       loginForm.reset();
@@ -172,8 +240,12 @@ if (loginForm) {
     } catch (error) {
       alert("Login failed: " + error.message);
       console.error("Login error:", error);
+
     } finally {
-      if (submitBtn) submitBtn.disabled = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Login";
+      }
     }
   });
 }
@@ -197,8 +269,13 @@ function openDashboard(email) {
     userEmailDisplay.innerText = "Logged in as: " + email;
   }
 
-  if (authContainer) authContainer.style.display = "none";
-  if (mainDashboard) mainDashboard.style.display = "flex";
+  if (authContainer) {
+    authContainer.style.display = "none";
+  }
+
+  if (mainDashboard) {
+    mainDashboard.style.display = "block";
+  }
 }
 
 // ==========================================
@@ -210,20 +287,36 @@ if (logoutBtn) {
 
     try {
       if (token) {
-        await apiRequest("logout", { token: token });
+        await apiRequest("logout", {
+          token: token
+        });
       }
+
     } catch (error) {
       console.error("Logout API error:", error);
+
     } finally {
       localStorage.removeItem(TOKEN_KEY);
 
-      if (mainDashboard) mainDashboard.style.display = "none";
-      if (authContainer) authContainer.style.display = "flex";
+      if (mainDashboard) {
+        mainDashboard.style.display = "none";
+      }
 
-      if (loginFormBox) loginFormBox.style.display = "block";
-      if (signUpFormBox) signUpFormBox.style.display = "none";
+      if (authContainer) {
+        authContainer.style.display = "flex";
+      }
 
-      if (authContainer) authContainer.classList.add("active-login");
+      if (loginFormBox) {
+        loginFormBox.style.display = "block";
+      }
+
+      if (signUpFormBox) {
+        signUpFormBox.style.display = "none";
+      }
+
+      if (authContainer) {
+        authContainer.classList.add("active-login");
+      }
     }
   });
 }
@@ -234,22 +327,21 @@ if (logoutBtn) {
 (async function restoreSession() {
   const token = localStorage.getItem(TOKEN_KEY);
 
-  if (!token) return;
+  if (!token) {
+    return;
+  }
 
   try {
-    const result = await apiRequest("me", { token: token });
+    const result = await apiRequest("me", {
+      token: token
+    });
 
-    if (result.student) {
-      const email = result.student.Email;
-
-      if (email) {
-        openDashboard(email);
-      } else {
-        localStorage.removeItem(TOKEN_KEY);
-      }
+    if (result.student && result.student.Email) {
+      openDashboard(result.student.Email);
     } else {
       localStorage.removeItem(TOKEN_KEY);
     }
+
   } catch (error) {
     localStorage.removeItem(TOKEN_KEY);
     console.warn("Session could not be restored:", error);
