@@ -135,6 +135,7 @@ if (loginForm) {
       if (submitBtn) submitBtn.disabled = true;
 
       const result = await apiRequest("login", {
+         const result = await apiRequest("login", {
         Email: email,
         email: email,
         Password: password,
