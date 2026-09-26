@@ -119,9 +119,11 @@ if (regForm) {
   });
 }
 
-// ==========================================
-// 7. Login Handler
-// ==========================================
+
+/* ==========================================
+   7. Login Handler - Corrected
+========================================== */
+
 if (loginForm) {
   loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -135,20 +137,26 @@ if (loginForm) {
       if (submitBtn) submitBtn.disabled = true;
 
       const result = await apiRequest("login", {
-         const result = await apiRequest("login", {
         Email: email,
         email: email,
         Password: password,
         password: password
       });
 
+      console.log("LOGIN API RESPONSE:", result);
+
       if (!result.token) {
-        throw new Error("Login token was not returned by the server.");
+        throw new Error(
+          result.message || "Login token was not returned by the server."
+        );
       }
 
       localStorage.setItem(TOKEN_KEY, result.token);
 
-      openDashboard(result.user?.Email || result.user?.email || email);
+      openDashboard(
+        result.user?.Email || result.user?.email || email
+      );
+
       loginForm.reset();
 
       alert(result.message || "Login successful!");
@@ -161,6 +169,7 @@ if (loginForm) {
     }
   });
 }
+
 
 // ==========================================
 // 8. Google Connect Button
