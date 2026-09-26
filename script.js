@@ -83,16 +83,17 @@ if (regForm) {
     try {
       if (submitBtn) submitBtn.disabled = true;
 
-      const result = await apiRequest("register", {
-        Email: email,
-        email: email,
-        Password: password,
-        password: password,
-        Full_Name: email.split("@")[0],
-        Status: "Active",
-        Role: "Student",
-        Join_Date: new Date().toISOString().split("T")[0]
-      });
+const result = await apiRequest("register", {
+  name: email.split("@")[0],
+  email: email,
+  password: password,
+  Full_Name: email.split("@")[0],
+  Email: email,
+  Password: password,
+  Status: "Active",
+  Role: "Student",
+  Join_Date: new Date().toISOString().split("T")[0]
+});
 
       if (result.token) {
         localStorage.setItem(TOKEN_KEY, result.token);
