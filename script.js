@@ -104,6 +104,54 @@ document.getElementById('regForm').addEventListener('submit', function(e) {
 });
 
 // ==========================================
+// Registration Submission (With Parent Email)
+// ==========================================
+document.getElementById('regForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('regEmail').value;
+  const password = document.getElementById('regPassword').value;
+  const parentEmail = document.getElementById('parentEmail') ? document.getElementById('parentEmail').value : "";
+  const submitBtn = e.target.querySelector('button');
+
+  submitBtn.innerText = "Registering...";
+  submitBtn.disabled = true;
+
+  // بیک اینڈ کو بھیجا جانے والا ڈیٹا
+  const payload = {
+    action: "register",
+    email: email,
+    password: password,
+    parentEmail: parentEmail,
+    device: navigator.userAgent
+  };
+
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .then(response => {
+    submitBtn.innerText = "Register";
+    submitBtn.disabled = false;
+
+    if (response.status === "success") {
+      showNotification(response.message, "success");
+      openDashboard(response.data.email);
+    } else {
+      showNotification(response.message, "error");
+    }
+  })
+  .catch(err => {
+    submitBtn.innerText = "Register";
+    submitBtn.disabled = false;
+    showNotification("کنکشن کی خرابی! گوگل شیٹ سے رابطہ نہیں ہو سکا۔", "error");
+    console.error(err);
+  });
+});
+
+
+// ==========================================
 // 5. Login Submission
 // ==========================================
 document.getElementById('loginForm').addEventListener('submit', function(e) {
