@@ -1,0 +1,238 @@
+/* ========================================== */
+/* 1. Reset and Universal Styles              */
+/* ========================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ========================================== */
+/* 2. Body and Background Styling             */
+/* ========================================== */
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('https://i.ibb.co/3kS4p0m/ajrak-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+/* ========================================== */
+/* 3. Main Card Layout Container              */
+/* ========================================== */
+.auth-container {
+  position: relative;
+  width: 900px;
+  height: 550px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* ========================================== */
+/* 4. Diagonal Yellow Overlay Cut             */
+/* ========================================== */
+.diagonal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffd700;
+  z-index: 1;
+  clip-path: polygon(0 0, 68% 0, 28% 100%, 0 100%);
+  transition: clip-path 0.7s ease-in-out;
+}
+
+.auth-container.active-login .diagonal-overlay {
+  clip-path: polygon(28% 0, 100% 0, 100% 100%, 68% 100%);
+}
+
+/* ========================================== */
+/* 5. Left Panel: Large Yellow Heading Text  */
+/* ========================================== */
+.yellow-text-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 52%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  z-index: 2;
+  color: #ffffff;
+  text-align: center;
+}
+
+.yellow-text-panel h1 {
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1.25;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+}
+
+/* ========================================== */
+/* 6. Right Panel: Forms & Inputs Styling     */
+/* ========================================== */
+.white-form-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  z-index: 2;
+}
+
+.form-content {
+  width: 100%;
+  transition: all 0.4s ease;
+}
+
+.form-title {
+  font-size: 28px;
+  color: #e6b800;
+  margin-bottom: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 13px 15px;
+  margin: 8px 0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  background: #f9f9f9;
+}
+
+/* ========================================== */
+/* 7. Buttons & Interactive Links Styling     */
+/* ========================================== */
+.action-btn {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  background: #ffd700;
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+.action-btn:hover {
+  background: #e6b800;
+}
+
+.google-btn {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  background: #ffffff;
+  color: #444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+
+.google-btn:hover {
+  background: #f1f1f1;
+}
+
+.or-divider {
+  margin: 12px 0;
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+}
+
+.toggle-link {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+}
+
+.toggle-link span {
+  color: #e6b800;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ========================================== */
+/* 8. Main Dashboard Display Styling          */
+/* ========================================== */
+.website-dashboard {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #f4f6f9;
+  z-index: 100;
+  flex-direction: column;
+}
+
+.navbar {
+  background: #ffd700;
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.logout-btn {
+  background: #ffffff;
+  color: #d4af37;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dashboard-content {
+  padding: 40px;
+  text-align: center;
+}
+
+.dashboard-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
