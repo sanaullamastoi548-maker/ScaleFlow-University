@@ -419,3 +419,25 @@ body {
     font-size: 12px;
   }
 }
+
+/* ========================================== */
+/* Parent Email Field Styling                 */
+/* ========================================== */
+.input-group {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.parent-field input {
+  border-left: 3px solid #ffd700; /* ممتاز دکھانے کے لیے ہلکی پیلی لکیر */
+}
+
+.field-hint {
+  display: block;
+  font-size: 11px;
+  color: #777;
+  margin-top: 2px;
+  text-align: right;
+  direction: rtl;
+}
+
