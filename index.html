@@ -1,3 +1,4 @@
+
 <!-- ========================================== -->
 <!-- 1. HTML document setup and header info    -->
 <!-- ========================================== -->
@@ -7,7 +8,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ScaleFlow University</title>
-  
+
   <!-- CSS Stylesheet Connection -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,7 +18,7 @@
   <!-- 2. Main Authentication Container (Card)    -->
   <!-- ========================================== -->
   <div class="auth-container" id="authContainer">
-    
+
     <!-- Diagonal Yellow Background Overlay -->
     <div class="diagonal-overlay"></div>
 
@@ -32,23 +33,52 @@
     <!-- 4. Right Section: Forms (Sign Up & Login)  -->
     <!-- ========================================== -->
     <div class="white-form-panel">
-      
+
       <!-- ========================================== -->
       <!-- 4A. Sign Up Form Box                       -->
       <!-- ========================================== -->
       <div class="form-content" id="signUpFormBox">
         <h2 class="form-title">Sign Up</h2>
-        
+
         <form id="regForm">
-          <input type="email" id="regEmail" placeholder="Email" required />
-          <input type="password" id="regPassword" placeholder="Password" required />
+
+          <!-- Full Name -->
+          <input
+            type="text"
+            id="regFullName"
+            name="fullName"
+            placeholder="Full Name"
+            autocomplete="name"
+            required
+          />
+
+          <!-- Email -->
+          <input
+            type="email"
+            id="regEmail"
+            name="email"
+            placeholder="Email"
+            autocomplete="email"
+            required
+          />
+
+          <!-- Password -->
+          <input
+            type="password"
+            id="regPassword"
+            name="password"
+            placeholder="Password"
+            autocomplete="new-password"
+            required
+          />
+
           <button type="submit" class="action-btn">Register</button>
         </form>
 
         <div class="or-divider">OR</div>
 
         <!-- Direct Email / Google Button -->
-        <button class="google-btn" id="googleConnectBtn">
+        <button type="button" class="google-btn" id="googleConnectBtn">
           <svg width="18" height="18" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -58,7 +88,10 @@
           Continue with Email
         </button>
 
-        <p class="toggle-link">Already have an account? <span id="goToLogin">Login</span></p>
+        <p class="toggle-link">
+          Already have an account?
+          <span id="goToLogin">Login</span>
+        </p>
       </div>
 
       <!-- ========================================== -->
@@ -66,32 +99,52 @@
       <!-- ========================================== -->
       <div class="form-content" id="loginFormBox" style="display: none;">
         <h2 class="form-title">Login</h2>
-        
+
         <form id="loginForm">
-          <input type="email" id="loginEmail" placeholder="Email" required />
-          <input type="password" id="loginPassword" placeholder="Password" required />
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="Email"
+            autocomplete="email"
+            required
+          />
+
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+            autocomplete="current-password"
+            required
+          />
+
           <button type="submit" class="action-btn">Login</button>
         </form>
 
-        <p class="toggle-link">Don't have an account? <span id="goToSignUp">Sign Up</span></p>
+        <p class="toggle-link">
+          Don't have an account?
+          <span id="goToSignUp">Sign Up</span>
+        </p>
       </div>
 
     </div>
   </div>
 
   <!-- ========================================== -->
-  <!-- 5. Main Dashboard (Opens after authentication) -->
+  <!-- 5. Main Dashboard                          -->
   <!-- ========================================== -->
   <div class="website-dashboard" id="mainDashboard">
     <div class="navbar">
       <h1>SCALEFLOW UNIVERSITY</h1>
       <button class="logout-btn" id="logoutBtn">Logout</button>
     </div>
+
     <div class="dashboard-content">
       <div class="dashboard-card">
         <h2>Welcome to ScaleFlow University!</h2>
         <p id="userEmailDisplay" style="margin-top: 10px; color: #666;"></p>
-        <p style="margin-top: 15px; color: #333; font-weight: 500;">آپ کا اکاؤنٹ کامیابی سے لاگ ان / رجسٹر ہو چکا ہے۔</p>
+        <p style="margin-top: 15px; color: #333; font-weight: 500;">
+          آپ کا اکاؤنٹ کامیابی سے لاگ ان / رجسٹر ہو چکا ہے۔
+        </p>
       </div>
     </div>
   </div>
